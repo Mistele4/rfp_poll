@@ -1,0 +1,38 @@
+name: Check AIAA DBF for 2026-27 RFP
+
+on:
+  schedule:
+    - cron: "*/30 * * * *"   # every 30 minutes (GitHub may delay a bit)
+  workflow_dispatch:
+    inputs:
+      test_email:
+        description: "Send a test email instead of checking"
+        type: boolean
+        default: false
+
+permissions:
+  contents: write
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Run watcher
+        env:
+          SMTP_HOST: ${{ secrets.SMTP_HOST }}
+          SMTP_PORT: ${{ secrets.SMTP_PORT }}
+          SMTP_USER: ${{ secrets.SMTP_USER }}
+          SMTP_PASS: ${{ secrets.SMTP_PASS }}
+          EMAIL_TO:  ${{ secrets.EMAIL_TO }}
+          DBF_FORCE_EMAIL: ${{ github.event.inputs.test_email == 'true' && '1' || '0' }}
+        run: python check_dbf.py
+      - name: Save state (so it only emails once)
+        run: |
+          git config user.name "dbf-watcher"
+          git config user.email "dbf-watcher@users.noreply.github.com"
+          git add state.json
+          git diff --cached --quiet || git commit -m "update watcher state" && git push
