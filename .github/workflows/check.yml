@@ -2,7 +2,7 @@ name: Check AIAA DBF for 2026-27 RFP
 
 on:
   schedule:
-    - cron: "*/30 * * * *"   # every 30 minutes (GitHub may delay a bit)
+    - cron: "*/15 * * * *"   # every 15 minutes (GitHub may delay a bit)
   workflow_dispatch:
     inputs:
       test_email:
