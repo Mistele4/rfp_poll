@@ -1,4 +1,12 @@
 {
-  "notified": false,
-  "last_checked": "2026-09-01T11:37:06+00:00"
+  "notified": true,
+  "last_checked": "2026-09-01T15:32:39+00:00",
+  "notified_at": "2026-09-01T15:32:39+00:00",
+  "hits": [
+    [
+      "https://aiaa.org/dbf/competition-information/rules-faq-qa/",
+      "#",
+      "2027 DBF Rules"
+    ]
+  ]
 }
